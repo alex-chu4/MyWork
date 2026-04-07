@@ -194,6 +194,64 @@
         }
 
         /*tooltip----------------------B*/
+
+        /*Modal Dialog----------------B*/
+        dialog#tips-dialog {
+            padding: 0;
+            /* 讓 backdrop 點擊可正確觸發 e.target === dialog */
+            border: 0;
+            border-radius: 12px;
+            width: min(720px, 90vw);
+            max-height: 85vh;
+            overflow: auto;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        dialog#tips-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.45);
+            /* 半透明遮罩，由瀏覽器原生渲染 */
+        }
+
+        dialog#tips-dialog .content {
+            padding: 1rem;
+        }
+
+        dialog#tips-dialog .header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 0.75rem 1rem 0;
+        }
+
+        dialog#tips-dialog .title {
+            grid-column: 2;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        dialog#tips-dialog .close-button {
+            grid-column: 3;
+            justify-self: end;
+        }
+
+        dialog#tips-dialog .close-button::after {
+            display: block;
+            content: '✖';
+            font-size: 0.8rem;
+            text-align: center;
+            font-style: normal;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: red;
+            color: #fff;
+            border: 0;
+            cursor: pointer;
+            border: 1px solid #c8d2dc;
+            border-width: 0 1px 1px 0;
+        }
+
+        /*Modal Dialog----------------E*/
     </style>
 </head>
 
@@ -212,8 +270,19 @@
         data-callback="recaptchaSuccess">
     </div>
     <div class="tooltip">
-        驗證通過可取得AI產生的「廣義絕對論」之 Podcast與逐字稿
+        驗證通過可取得AI產生的「廣義絕對論」之 Podcast與逐字稿 及 實作地點
     </div>
+    <dialog id="tips-dialog" onclick="if(event.target===this)this.close()">
+        <div class="header">
+            <span class="title">我的地圖</span>
+            <i class="close-button" onclick="document.getElementById('tips-dialog').close()"></i>
+        </div>
+        <div class="content">
+            <iframe id="myFrame" width="100%" height="400" title="我的地圖" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </dialog>
     <button id="btnReset" onclick="grecaptcha.reset();document.getElementById('MyMsg').innerHTML = '';">Reset</button>
     <section id="main" class="">
         <div id="container1" class="container">
@@ -402,7 +471,7 @@
             }
             // Notification --------------- E
 
-            // 廣義絕對論(AI Podcast與逐字稿) ------ B
+            // 廣義絕對論(AI產生的Podcast與逐字稿及MAP) ------ B
             let _win0 = window;
             setTimeout(async () => {
                 let _win = window.open('https://drive.google.com/file/d/1Xo_KR3ViifFx1A0cMTU_533hPCRiaTff/view?usp=sharing', '_blank');
@@ -457,7 +526,13 @@
                     // }, 10000);
                 });
             // Copy to clipboard ---------- E
-            // 廣義絕對論(AI Podcast與逐字稿) ------ E   
+
+            //  MAP ------------------------ B
+            document.getElementById('myFrame').src = "MyMAP.html";
+            document.getElementById('tips-dialog').showModal();
+            //  MAP ------------------------ E
+            // 廣義絕對論(AI產生的Podcast與逐字稿及MAP) ------ E  
+
         }
 
         // Countdown ----------------------- B
